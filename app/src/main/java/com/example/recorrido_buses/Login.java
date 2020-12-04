@@ -94,7 +94,6 @@ public class Login extends AppCompatActivity {
             info_user.put("user_photo", String.valueOf(user.getPhotoUrl()));
             info_user.put("user_id", user.getUid());
 
-
             Intent i = new Intent(Login.this,Mapa.class);
             startActivity(i);
             finish();
@@ -102,9 +101,6 @@ public class Login extends AppCompatActivity {
         } else {
             System.out.println("sin registrarse");
         }
-
-
-
     }
 
 

@@ -64,11 +64,12 @@ tools:context=".Mapa">
             android:id="@+id/btnParada"
             android:layout_width="25dp"
             android:layout_height="30dp"
+            android:onClick="toParadas"
             android:background="@drawable/estacion"
             />
         <ImageButton
             android:id="@+id/btnMapa"
-            android:layout_width="30dp"
+            android:layout_width="25dp"
             android:layout_height="30dp"
             android:background="@drawable/mapa"
             android:layout_marginHorizontal="80dp"
