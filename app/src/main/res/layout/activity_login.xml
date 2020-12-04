@@ -54,6 +54,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="25dp"
         android:text="Ingresar con google"
+        android:onClick="iniciarSesion"
         android:textColor="#0F106D" />
 
 

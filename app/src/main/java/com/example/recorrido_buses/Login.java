@@ -1,7 +1,6 @@
 package com.example.recorrido_buses;
 
 import androidx.appcompat.app.AppCompatActivity;
-<<<<<<< Updated upstream
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,14 +17,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.HashMap;
-=======
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
->>>>>>> Stashed changes
-
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     static final int GOOGLE_SIGN_IN = 123;
     FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
@@ -35,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-<<<<<<< Updated upstream
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -100,10 +94,15 @@ public class MainActivity extends AppCompatActivity {
             info_user.put("user_photo", String.valueOf(user.getPhotoUrl()));
             info_user.put("user_id", user.getUid());
 
+
+            Intent i = new Intent(Login.this,Mapa.class);
+            startActivity(i);
+            finish();
+
         } else {
             System.out.println("sin registrarse");
         }
-=======
+
 
 
     }
@@ -114,6 +113,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
         finish();
 
->>>>>>> Stashed changes
+
     }
 }

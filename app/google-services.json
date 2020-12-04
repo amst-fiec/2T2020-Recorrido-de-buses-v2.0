@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "752934529559-d6s2j2rcqra129piqn06f9g0lntj238k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recorrido_buses",
+            "certificate_hash": "ca10f5f54c886bb0f3b7d0f1c7402a748529d57d"
+          }
+        },
+        {
           "client_id": "752934529559-shaegjte3g3d901l6h8d2rtscsggdsec.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
