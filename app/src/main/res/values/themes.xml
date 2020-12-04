@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Recorrido_buses" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Recorrido_buses" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#0F106D</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

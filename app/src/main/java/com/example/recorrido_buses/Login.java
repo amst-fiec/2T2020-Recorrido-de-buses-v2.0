@@ -1,6 +1,7 @@
 package com.example.recorrido_buses;
 
 import androidx.appcompat.app.AppCompatActivity;
+<<<<<<< Updated upstream
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.HashMap;
+=======
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+>>>>>>> Stashed changes
 
 public class MainActivity extends AppCompatActivity {
     static final int GOOGLE_SIGN_IN = 123;
@@ -28,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+<<<<<<< Updated upstream
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -95,5 +103,17 @@ public class MainActivity extends AppCompatActivity {
         } else {
             System.out.println("sin registrarse");
         }
+=======
+
+
+    }
+
+
+    public void toMapa(View view) {
+        Intent i = new Intent(Login.this,Mapa.class);
+        startActivity(i);
+        finish();
+
+>>>>>>> Stashed changes
     }
 }

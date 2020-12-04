@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#FFFFFF"
+android:gravity="center"
+
+android:orientation="vertical"
+tools:context=".Mapa">
+    <RelativeLayout
+        android:id="@+id/TopBar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+
+        >
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="30dp"
+            android:background="@drawable/logo"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            />
+
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/menu"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            />
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/BottomMenu"
+        android:layout_below="@+id/TopBar"
+        android:background="@android:color/darker_gray"
+
+        android:src="@drawable/ciudad2" />
+
+    <LinearLayout
+        android:id="@+id/BottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+
+
+        >
+
+        <ImageButton
+            android:id="@+id/btnParada"
+            android:layout_width="25dp"
+            android:layout_height="30dp"
+            android:background="@drawable/estacion"
+            />
+        <ImageButton
+            android:id="@+id/btnMapa"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/mapa"
+            android:layout_marginHorizontal="80dp"
+            />
+        <ImageButton
+            android:id="@+id/btnBus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/buses"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

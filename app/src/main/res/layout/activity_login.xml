@@ -41,6 +41,7 @@
         android:background="@drawable/edit_button"
         android:layout_height="60dp"
         android:textColor="#FFFFFF"
+        android:onClick="toMapa"
         />
 
     <Button
