@@ -44,16 +44,16 @@
         />
 
     <Button
-        android:layout_marginTop="20dp"
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edit_text"
         android:drawableLeft="@drawable/google2"
+        android:paddingLeft="15dp"
         android:paddingRight="25dp"
         android:text="Ingresar con google"
-        android:paddingLeft="15dp"
-        android:background="@drawable/edit_text"
-        android:layout_height="60dp"
-        android:textColor="#0F106D"
-        />
+        android:textColor="#0F106D" />
 
 
 </LinearLayout>
