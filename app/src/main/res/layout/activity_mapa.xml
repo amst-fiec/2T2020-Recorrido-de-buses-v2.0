@@ -13,9 +13,7 @@ tools:context=".Mapa">
         android:id="@+id/TopBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-
-        >
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:layout_width="150dp"
@@ -23,8 +21,7 @@ tools:context=".Mapa">
             android:background="@drawable/logo"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            />
+            android:layout_marginLeft="15dp"/>
 
         <ImageButton
             android:id="@+id/btnMenu"
@@ -33,20 +30,16 @@ tools:context=".Mapa">
             android:background="@drawable/menu"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            />
+            android:layout_marginRight="15dp"/>
 
     </RelativeLayout>
-
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/BottomMenu"
         android:layout_below="@+id/TopBar"
         android:background="@android:color/darker_gray"
-
-        android:src="@drawable/ciudad2" />
+        android:src="@drawable/mapa3"/>
 
     <LinearLayout
         android:id="@+id/BottomMenu"
@@ -55,32 +48,26 @@ tools:context=".Mapa">
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
-
-
-        >
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/btnParada"
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:onClick="toParadas"
-            android:background="@drawable/estacion"
-            />
+            android:background="@drawable/estacion"/>
+
         <ImageButton
             android:id="@+id/btnMapa"
             android:layout_width="25dp"
             android:layout_height="30dp"
             android:background="@drawable/mapa"
-            android:layout_marginHorizontal="80dp"
-            />
+            android:layout_marginHorizontal="80dp"/>
+
         <ImageButton
             android:id="@+id/btnBus"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/buses"
-            />
+            android:background="@drawable/buses"/>
     </LinearLayout>
-
-
 </RelativeLayout>

@@ -51,11 +51,9 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/edit_text"
         android:drawableLeft="@drawable/google2"
-        android:paddingLeft="15dp"
-        android:paddingRight="25dp"
-        android:text="Ingresar con google"
         android:onClick="iniciarSesion"
+        android:paddingLeft="75dp"
+        android:paddingRight="75dp"
+        android:text="Ingresar con google"
         android:textColor="#0F106D" />
-
-
 </LinearLayout>
