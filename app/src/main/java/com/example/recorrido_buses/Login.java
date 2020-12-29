@@ -108,7 +108,11 @@ public class Login extends AppCompatActivity {
         Intent i = new Intent(Login.this,Mapa.class);
         startActivity(i);
         finish();
+    }
 
-
+    public void toRegistro(View view) {
+        Intent i = new Intent(Login.this,Registro.class);
+        startActivity(i);
+        finish();
     }
 }

@@ -56,4 +56,34 @@
         android:paddingRight="75dp"
         android:text="Ingresar con google"
         android:textColor="#0F106D" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:gravity="center_horizontal"
+            android:text="¿No tienes cuenta?"
+            />
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:gravity="center_horizontal"
+            android:textColor="#0F106D"
+            android:textIsSelectable="true"
+
+            android:text="Registrate"
+            android:onClick="toRegistro"
+            />
+    </LinearLayout>
 </LinearLayout>
