@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "752934529559",
+    "firebase_url": "https://firebase-296222-default-rtdb.firebaseio.com",
     "project_id": "firebase-296222",
     "storage_bucket": "firebase-296222.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "752934529559-cejj5l75304lo78p4rjqem0pdkia1ih8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recorrido_buses",
+            "certificate_hash": "57bd460eb1dba55ab1adc7ac61c9a5d20afb50e4"
+          }
+        },
         {
           "client_id": "752934529559-d6s2j2rcqra129piqn06f9g0lntj238k.apps.googleusercontent.com",
           "client_type": 1,
