@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,13 +19,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
-
+    Switch switchButton;
     private GoogleMap mMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
-
+        switchButton=findViewById(R.id.switchbutton);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -53,5 +55,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
+    public void switchButton(View view) {
+        if(switchButton.isChecked())
+        {
+            Toast.makeText(Mapa.this,"SigFox",Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(Mapa.this,"GSM",Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
