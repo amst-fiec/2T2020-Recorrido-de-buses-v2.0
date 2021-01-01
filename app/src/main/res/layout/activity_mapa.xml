@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="#FFFFFF"
-android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center"
 
-android:orientation="vertical"
-tools:context=".Mapa">
+    android:orientation="vertical"
+    tools:context=".Mapa">
 
     <!--
     <RelativeLayout
@@ -36,14 +36,11 @@ tools:context=".Mapa">
 
     </RelativeLayout>
     -->
-    <ImageView
+    <fragment
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/BottomMenu"
-        android:layout_below="@+id/TopBar"
-        android:background="@android:color/darker_gray"
-
-        />
+        android:layout_marginBottom="60dp" />
 
     <LinearLayout
         android:id="@+id/BottomMenu"

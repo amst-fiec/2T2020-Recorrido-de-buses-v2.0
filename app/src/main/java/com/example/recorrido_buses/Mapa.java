@@ -14,16 +14,12 @@ public class Mapa extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
-
-
     }
 
     public void toParadas(View view) {
-
         Intent intent = new Intent(Mapa.this, Parada.class);
         startActivity(intent);
         finish();
-
     }
 
 
@@ -31,12 +27,8 @@ public class Mapa extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater=getMenuInflater();
         inflater.inflate(R.menu.menu,menu);
-
         return true;
-
     }
 
-
-
-
 }
+
