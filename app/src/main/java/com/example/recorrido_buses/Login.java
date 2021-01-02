@@ -19,7 +19,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +43,7 @@ public class Login extends AppCompatActivity {
     private String email="";
     private String pass="";
 
+    DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +51,9 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-
+        mDatabase= FirebaseDatabase.getInstance().getReference();
         edtEmail=(EditText) findViewById(R.id.edtEmail);
         edtPass=(EditText) findViewById(R.id.edtPass);
-
-
-
-
-
-
-
-
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -94,9 +92,6 @@ public class Login extends AppCompatActivity {
         }
 
     }
-
-
-
     private void loginUser(){
         mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -109,11 +104,7 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-
     }
-
-
-
 
 
     @Override
@@ -148,6 +139,8 @@ public class Login extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
+
+            /*
             HashMap<String, String> info_user = new HashMap<String, String>();
             info_user.put("user_name", user.getDisplayName());
             info_user.put("user_email", user.getEmail());
@@ -157,6 +150,36 @@ public class Login extends AppCompatActivity {
             Intent i = new Intent(Login.this,Mapa.class);
             startActivity(i);
             finish();
+
+
+             */
+            Map<String, Object> map= new HashMap<>();
+            map.put("name",user.getDisplayName());
+            map.put("email",user.getEmail());
+            map.put("tipo",1);
+
+            String id= mAuth.getCurrentUser().getUid();
+            mDatabase.child("Users").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task2) {
+                    if (task2.isSuccessful()){
+                        Toast.makeText(Login.this, "Ingreso exitoso", Toast.LENGTH_SHORT).show();
+                        toMapa();
+                    }
+                    else {
+                        Toast.makeText(Login.this, "No se pudieron crear los datos correctamente", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+
+
+
+
+
+
+
+
 
         } else {
             System.out.println("sin registrarse");
@@ -176,7 +199,7 @@ public class Login extends AppCompatActivity {
         finish();
     }
 
-
+/*
     @Override
     protected void onStart() {
         super.onStart();
@@ -185,5 +208,5 @@ public class Login extends AppCompatActivity {
         }
     }
 
-
+*/
 }

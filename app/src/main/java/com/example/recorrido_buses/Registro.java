@@ -79,6 +79,7 @@ public class Registro extends AppCompatActivity {
                     map.put("name",name);
                     map.put("email",email);
                     map.put("pass",pass);
+                    map.put("tipo",1);
 
 
                     String id= mAuth.getCurrentUser().getUid();

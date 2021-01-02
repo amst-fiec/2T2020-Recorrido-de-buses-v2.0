@@ -2,17 +2,8 @@ package com.example.recorrido_buses;
 
 public class MapsCoor {
 
-    private String nombre;
     private Double lat;
     private Double lon;
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 
     public MapsCoor() {
     }

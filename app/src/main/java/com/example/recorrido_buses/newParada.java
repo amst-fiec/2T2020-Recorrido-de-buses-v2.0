@@ -81,7 +81,7 @@ public class newParada extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task2) {
                 if (task2.isSuccessful()){
-                    Toast.makeText(newParada.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(newParada.this, "Parada registrada", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(newParada.this, Mapa.class);
                     startActivity(intent);

@@ -73,7 +73,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     MapsCoor mc = snapshot.getValue(MapsCoor.class);
                     Double lat = mc.getLat();
                     Double lon = mc.getLon();
-                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f,1.0f).title(mc.getNombre());
+                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f,1.0f).title(snapshot.getKey());
                     markerOptions.position(new LatLng(lat, lon));
 
                     tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
