@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.recorrido_buses.common.utils.UtilsNetwork;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -76,8 +78,14 @@ public class Login extends AppCompatActivity {
     }
 
     public void iniciarSesion(View view) {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
+
+        if(UtilsNetwork.isOnline(this)){
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
+        }
+        else {
+            Toast.makeText(this, "Sin acceso a internet, Verifique su conexión a internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void login(View view) {
@@ -85,13 +93,21 @@ public class Login extends AppCompatActivity {
         pass=edtPass.getText().toString();
 
         if(!email.isEmpty() && !pass.isEmpty()){
-            loginUser();
+
+            if(UtilsNetwork.isOnline(this)) {
+                loginUser();
+            }
+            else {
+                Toast.makeText(this, "Sin acceso a internet, Verifique su conexión a internet", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
             Toast.makeText(this, "Por favor ingrese su usuario y contraseña", Toast.LENGTH_SHORT).show();
         }
 
     }
+
+
     private void loginUser(){
         mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -156,6 +172,7 @@ public class Login extends AppCompatActivity {
             Map<String, Object> map= new HashMap<>();
             map.put("name",user.getDisplayName());
             map.put("email",user.getEmail());
+            map.put("photo",String.valueOf(user.getPhotoUrl()));
             map.put("tipo",1);
 
             String id= mAuth.getCurrentUser().getUid();
@@ -174,18 +191,10 @@ public class Login extends AppCompatActivity {
             });
 
 
-
-
-
-
-
-
-
         } else {
             System.out.println("sin registrarse");
         }
     }
-
 
     public void toMapa() {
         Intent i = new Intent(Login.this,Mapa.class);
@@ -198,6 +207,9 @@ public class Login extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
+
+
 
 /*
     @Override

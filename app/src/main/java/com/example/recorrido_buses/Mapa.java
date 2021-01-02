@@ -120,6 +120,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+
+
+
     }
 
     public void switchButton(View view) {

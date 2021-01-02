@@ -1,5 +1,6 @@
 package com.example.recorrido_buses;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,18 +9,53 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class Parada extends AppCompatActivity {
 
 
-    ListView simpleList;
-    String countryList[] = {"India", "China", "australia", "Portugle", "America", "NewZealand","Caracas","Petare"};
+    private DatabaseReference db_reference;
+    private ListView simpleList;
+    private String listParadas[] = {"India", "China", "australia", "Portugle", "America", "NewZealand","Caracas","Petare"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parada);
 
+        db_reference = FirebaseDatabase.getInstance().getReference();
+
+        db_reference.child("Parada").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    MapsCoor mc = snapshot.getValue(MapsCoor.class);
+                    Double lat = mc.getLat();
+                    Double lon = mc.getLon();
+                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f,1.0f).title(snapshot.getKey());
+                    markerOptions.position(new LatLng(lat, lon));
+
+
+                    
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
         simpleList = (ListView)findViewById(R.id.listaParadas);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.textView, countryList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.textView, listParadas);
         simpleList.setAdapter(arrayAdapter);
 
 
