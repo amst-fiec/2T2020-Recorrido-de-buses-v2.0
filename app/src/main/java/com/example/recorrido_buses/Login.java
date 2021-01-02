@@ -1,5 +1,6 @@
 package com.example.recorrido_buses;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -20,17 +23,40 @@ import java.util.HashMap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
 public class Login extends AppCompatActivity {
     static final int GOOGLE_SIGN_IN = 123;
     FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient;
     Button btn_login;
 
+    private EditText edtEmail;
+    private EditText edtPass;
+
+    private String email="";
+    private String pass="";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         mAuth = FirebaseAuth.getInstance();
+
+        edtEmail=(EditText) findViewById(R.id.edtEmail);
+        edtPass=(EditText) findViewById(R.id.edtPass);
+
+
+
+
+
+
+
+
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -55,6 +81,40 @@ public class Login extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
     }
+
+    public void login(View view) {
+        email=edtEmail.getText().toString();
+        pass=edtPass.getText().toString();
+
+        if(!email.isEmpty() && !pass.isEmpty()){
+            loginUser();
+        }
+        else{
+            Toast.makeText(this, "Por favor ingrese su usuario y contraseña", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
+    private void loginUser(){
+        mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    toMapa();
+                }
+                else{
+                    Toast.makeText(Login.this, "Por favor revise que sus credenciales sean correctas", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -104,7 +164,7 @@ public class Login extends AppCompatActivity {
     }
 
 
-    public void toMapa(View view) {
+    public void toMapa() {
         Intent i = new Intent(Login.this,Mapa.class);
         startActivity(i);
         finish();
@@ -115,4 +175,15 @@ public class Login extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() != null) {
+            toMapa();
+        }
+    }
+
+
 }

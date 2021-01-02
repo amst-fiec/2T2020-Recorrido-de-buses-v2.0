@@ -23,4 +23,6 @@ public class Bienvenidos extends AppCompatActivity {
             }
         }, 3000);
     }
+
+
 }
