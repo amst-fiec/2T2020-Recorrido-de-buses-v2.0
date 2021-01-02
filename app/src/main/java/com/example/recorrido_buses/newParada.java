@@ -95,6 +95,12 @@ public class newParada extends AppCompatActivity {
         });
 
     }
+    @Override
+    public void onBackPressed() {
 
+        Intent intent = new Intent(newParada.this, Parada.class);
+        startActivity(intent);
+        finish();
+    }
 
 }
