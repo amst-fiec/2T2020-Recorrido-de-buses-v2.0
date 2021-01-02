@@ -17,10 +17,12 @@ public class Bienvenidos extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Bienvenidos.this, Parada.class);
+                Intent intent = new Intent(Bienvenidos.this, Login.class);
                 startActivity(intent);
                 finish();
             }
         }, 3000);
     }
+
+
 }
