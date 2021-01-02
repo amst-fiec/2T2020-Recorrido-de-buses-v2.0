@@ -73,11 +73,13 @@
             android:background="@drawable/buses"/>
     </LinearLayout>
 
-    <Switch
-        android:id="@+id/switchbutton"
+    <ToggleButton
+        android:id="@+id/tgBtn1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="switchButton"
-        android:text="GSM/Sigfox"
-        android:textStyle="bold" />
+        android:textOff="GSM"
+        android:textOn="Sigfox"
+        />
+
 </RelativeLayout>
