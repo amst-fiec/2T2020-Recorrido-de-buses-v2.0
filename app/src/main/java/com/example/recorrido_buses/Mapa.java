@@ -10,6 +10,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
-    Switch switchButton;
+    ToggleButton tgbtn;
     private GoogleMap mMap;
     private DatabaseReference db_reference;
     private ArrayList<Marker> tmpRealTimeMarkers=new ArrayList<>();
@@ -36,7 +38,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
-        switchButton=findViewById(R.id.switchbutton);
+        tgbtn=(ToggleButton) findViewById(R.id.tgBtn1);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -85,7 +87,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
 
     public void switchButton(View view) {
-        if(switchButton.isChecked())
+        if(tgbtn.isChecked())
         {
             Toast.makeText(Mapa.this,"SigFox",Toast.LENGTH_SHORT).show();
         }
