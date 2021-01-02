@@ -34,6 +34,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private DatabaseReference db_reference;
     private ArrayList<Marker> tmpRealTimeMarkers=new ArrayList<>();
     private ArrayList<Marker> realTimeMarkers=new ArrayList<>();
+    private ArrayList<Marker> tmpRealTimeMarkersBus=new ArrayList<>();
+    private ArrayList<Marker> realTimeMarkersBus=new ArrayList<>();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,38 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 }
                 realTimeMarkers.clear();
                 realTimeMarkers.addAll(tmpRealTimeMarkers);
+            }
+
+
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
+        db_reference.child("Bus").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (Marker marker:realTimeMarkersBus){
+                    marker.remove();
+                }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    if(snapshot.getKey().equals("2")){
+
+                        MapsCoor mc = snapshot.getValue(MapsCoor.class);
+                        Double lat = mc.getLat();
+                        Double lon = mc.getLon();
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.buses)).anchor(0.0f,1.0f).title(snapshot.getKey());
+                        markerOptions.position(new LatLng(lat, lon));
+                        System.out.print(lat);
+                        tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
+                    }
+                }
+                realTimeMarkersBus.clear();
+                realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
             }
 
             @Override
