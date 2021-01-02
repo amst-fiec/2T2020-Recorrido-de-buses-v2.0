@@ -93,7 +93,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-
         db_reference.child("Bus").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

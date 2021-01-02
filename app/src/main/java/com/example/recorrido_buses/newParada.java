@@ -7,6 +7,7 @@ package com.example.recorrido_buses;
         import android.os.Bundle;
         import android.view.View;
         import android.widget.EditText;
+        import android.widget.TextView;
         import android.widget.Toast;
 
         import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +22,8 @@ package com.example.recorrido_buses;
 
 public class newParada extends AppCompatActivity {
 
+    private TextView tvTitle;
+
     private EditText edtName;
     private EditText edtLat;
     private EditText edtLon;
@@ -31,6 +34,7 @@ public class newParada extends AppCompatActivity {
     private Double  lat =0.0;
     private Double lon =0.0;
 
+    private boolean isNew=true;
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
 
@@ -43,9 +47,21 @@ public class newParada extends AppCompatActivity {
         mDatabase= FirebaseDatabase.getInstance().getReference();
 
 
+        isNew=getIntent().getBooleanExtra("isNew",true);
+
         edtName = (EditText) findViewById(R.id.edtName);
         edtLat = (EditText) findViewById(R.id.edtLat);
         edtLon = (EditText) findViewById(R.id.edtLon);
+
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+
+
+        if (isNew){
+            tvTitle.setText("Nueva Parada");
+        }
+        else {
+            tvTitle.setText("Editar Parada");
+        }
 
     }
 
