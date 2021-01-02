@@ -14,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -70,8 +71,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     MapsCoor mc = snapshot.getValue(MapsCoor.class);
                     Double lat = mc.getLat();
                     Double lon = mc.getLon();
-                    MarkerOptions markerOptions = new MarkerOptions();
+                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f,1.0f).title(mc.getNombre());
                     markerOptions.position(new LatLng(lat, lon));
+
                     tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
                 }
                 realTimeMarkers.clear();
