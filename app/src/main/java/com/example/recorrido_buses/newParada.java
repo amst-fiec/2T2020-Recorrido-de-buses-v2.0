@@ -6,9 +6,12 @@ package com.example.recorrido_buses;
         import android.content.Intent;
         import android.os.Bundle;
         import android.view.View;
+        import android.widget.AdapterView;
+        import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.ImageButton;
+        import android.widget.ListView;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -16,8 +19,11 @@ package com.example.recorrido_buses;
         import com.google.android.gms.tasks.Task;
         import com.google.firebase.auth.AuthResult;
         import com.google.firebase.auth.FirebaseAuth;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
+        import com.google.firebase.database.ValueEventListener;
 
         import java.util.HashMap;
         import java.util.Map;
@@ -39,9 +45,9 @@ public class newParada extends AppCompatActivity {
     private Double lon =0.0;
 
     private boolean isNew=true;
+    private String idParada="";
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +57,57 @@ public class newParada extends AppCompatActivity {
         mDatabase= FirebaseDatabase.getInstance().getReference();
 
         isNew=getIntent().getBooleanExtra("isNew",true);
+        idParada=getIntent().getStringExtra("parada");
 
         edtName = (EditText) findViewById(R.id.edtName);
         edtLat = (EditText) findViewById(R.id.edtLat);
         edtLon = (EditText) findViewById(R.id.edtLon);
 
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-
-
         imbSupr = (Button) findViewById(R.id.imbSupr);
+
+        mDatabase.child("Parada").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    listParadas.add(snapshot.getKey());
+                }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Toast.makeText(Parada.this, "Error al obtener lista", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String parada = adapterView.getItemAtPosition(i).toString();
+
+                Intent intent = new Intent(Parada.this, newParada.class);
+                intent.putExtra("isNew",false);
+                intent.putExtra("parada",parada);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+
+
+
+
+
+
+
 
         if (isNew){
             tvTitle.setText("Nueva Parada");

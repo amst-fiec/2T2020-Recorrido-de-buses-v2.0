@@ -31,7 +31,6 @@ public class Parada extends AppCompatActivity {
     private DatabaseReference db_reference;
     private ListView simpleList;
     List<String> listParadas = new ArrayList<String>();
-    //private String listParadas[] = {"India", "China", "australia", "Portugle", "America", "NewZealand","Caracas","Petare"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
