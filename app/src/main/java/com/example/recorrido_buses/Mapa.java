@@ -23,6 +23,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+<<<<<<< HEAD
+=======
+import com.google.firebase.auth.FirebaseUser;
+>>>>>>> c50e5d337c9164ed49e3ebb01b25a12c0c5cb203
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,12 +46,17 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<Marker> tmpRealTimeMarkersBus=new ArrayList<>();
     private ArrayList<Marker> realTimeMarkersBus=new ArrayList<>();
 
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
 
         tgbtn=(ToggleButton) findViewById(R.id.tgBtn1);
+
+
+
         int status= GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if (status== ConnectionResult.SUCCESS){
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -58,6 +67,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             Dialog dialog =GooglePlayServicesUtil.getErrorDialog(status,(Activity)getApplicationContext(),10);
             dialog.show();
         }
+
+
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        isUser();
     }
 
     public void toParadas(View view) {
@@ -155,6 +169,44 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             Toast.makeText(Mapa.this,"GSM",Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+    public void isUser() {
+
+
+        FirebaseUser usuario = mAuth.getCurrentUser();
+
+        mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    String mail = user.getEmail();
+
+                    if (mail.equals(usuario.getEmail())) {
+                        int tipo = user.getTipo();
+
+                        Toast.makeText(Mapa.this, "El usuario es "+tipo, Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+
+
+
+
 
     @Override
     public void onBackPressed() {

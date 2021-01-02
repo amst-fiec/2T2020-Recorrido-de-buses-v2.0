@@ -2,6 +2,7 @@ package com.example.recorrido_buses;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -21,8 +26,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +50,8 @@ public class Login extends AppCompatActivity {
     private EditText edtEmail;
     private EditText edtPass;
 
-    private String email="";
-    private String pass="";
+    private String email = "";
+    private String pass = "";
 
     DatabaseReference mDatabase;
 
@@ -53,9 +61,9 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase= FirebaseDatabase.getInstance().getReference();
-        edtEmail=(EditText) findViewById(R.id.edtEmail);
-        edtPass=(EditText) findViewById(R.id.edtPass);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        edtEmail = (EditText) findViewById(R.id.edtEmail);
+        edtPass = (EditText) findViewById(R.id.edtPass);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -65,7 +73,7 @@ public class Login extends AppCompatActivity {
 
         Intent intent = getIntent();
         String msg = intent.getStringExtra("msg");
-        if(msg != null) {
+        if (msg != null) {
             if (msg.equals("cerrarSesion")) {
                 cerrarSesion();
             }
@@ -79,43 +87,40 @@ public class Login extends AppCompatActivity {
 
     public void iniciarSesion(View view) {
 
-        if(UtilsNetwork.isOnline(this)){
+        if (UtilsNetwork.isOnline(this)) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
-        }
-        else {
+        } else {
             Toast.makeText(this, "Sin acceso a internet, Verifique su conexión a internet", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void login(View view) {
-        email=edtEmail.getText().toString();
-        pass=edtPass.getText().toString();
+        email = edtEmail.getText().toString();
+        pass = edtPass.getText().toString();
 
-        if(!email.isEmpty() && !pass.isEmpty()){
+        if (!email.isEmpty() && !pass.isEmpty()) {
 
-            if(UtilsNetwork.isOnline(this)) {
+            if (UtilsNetwork.isOnline(this)) {
                 loginUser();
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Sin acceso a internet, Verifique su conexión a internet", Toast.LENGTH_SHORT).show();
             }
-        }
-        else{
+        } else {
             Toast.makeText(this, "Por favor ingrese su usuario y contraseña", Toast.LENGTH_SHORT).show();
         }
 
     }
 
 
-    private void loginUser(){
-        mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    private void loginUser() {
+        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
+
                     toMapa();
-                }
-                else{
+                } else {
                     Toast.makeText(Login.this, "Por favor revise que sus credenciales sean correctas", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -151,7 +156,7 @@ public class Login extends AppCompatActivity {
                 updateUI(null);
             }
         });
-        }
+    }
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -168,21 +173,20 @@ public class Login extends AppCompatActivity {
             finish();
 
              */
-            Map<String, Object> map= new HashMap<>();
-            map.put("name",user.getDisplayName());
-            map.put("email",user.getEmail());
-            map.put("photo",String.valueOf(user.getPhotoUrl()));
-            map.put("tipo",1);
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", user.getDisplayName());
+            map.put("email", user.getEmail());
+            map.put("photo", String.valueOf(user.getPhotoUrl()));
+            map.put("tipo", 1);
 
-            String id= mAuth.getCurrentUser().getUid();
+            String id = mAuth.getCurrentUser().getUid();
             mDatabase.child("Users").child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task2) {
-                    if (task2.isSuccessful()){
+                    if (task2.isSuccessful()) {
                         Toast.makeText(Login.this, "Ingreso exitoso", Toast.LENGTH_SHORT).show();
                         toMapa();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(Login.this, "No se pudieron crear los datos correctamente", Toast.LENGTH_SHORT).show();
                     }
 
@@ -196,16 +200,21 @@ public class Login extends AppCompatActivity {
     }
 
     public void toMapa() {
-        Intent i = new Intent(Login.this,Mapa.class);
+        Intent i = new Intent(Login.this, Mapa.class);
         startActivity(i);
         finish();
     }
 
     public void toRegistro(View view) {
-        Intent i = new Intent(Login.this,Registro.class);
+        Intent i = new Intent(Login.this, Registro.class);
         startActivity(i);
         finish();
     }
+
+
+
+
+
 
 
 

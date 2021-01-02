@@ -52,6 +52,7 @@ tools:context=".newParada">
     android:padding="10dp"
     />
 <Button
+    android:id="@+id/btnRegistrar"
     android:layout_marginTop="40dp"
     android:layout_width="match_parent"
     android:text="REGISTRAR"
@@ -61,7 +62,7 @@ tools:context=".newParada">
     android:onClick="registrar"
     />
     <Button
-        android:id="@+id/imbSupr"
+        android:id="@+id/btnSupr"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:text="ELIMINAR PARADA"

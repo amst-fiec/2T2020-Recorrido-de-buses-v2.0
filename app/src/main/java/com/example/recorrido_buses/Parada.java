@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,6 +16,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,14 +34,24 @@ public class Parada extends AppCompatActivity {
     private DatabaseReference db_reference;
     private ListView simpleList;
     List<String> listParadas = new ArrayList<String>();
+    private ImageButton btnNewParada;
+
+    FirebaseAuth mAuth;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parada);
 
+
+        mAuth = FirebaseAuth.getInstance();
         db_reference = FirebaseDatabase.getInstance().getReference();
 
         simpleList = (ListView)findViewById(R.id.listaParadas);
+
+        btnNewParada = (ImageButton)findViewById(R.id.btnNewParada);
+
 
         db_reference.child("Parada").addValueEventListener(new ValueEventListener() {
             @Override
@@ -70,6 +83,7 @@ public class Parada extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+
                 String parada = adapterView.getItemAtPosition(i).toString();
 
                 Intent intent = new Intent(Parada.this, newParada.class);
@@ -81,6 +95,8 @@ public class Parada extends AppCompatActivity {
             }
         });
 
+        isUser();
+
     }
 
 
@@ -91,6 +107,43 @@ public class Parada extends AppCompatActivity {
         finish();
     }
 
+    public void isUser() {
+
+
+        FirebaseUser usuario = mAuth.getCurrentUser();
+
+        db_reference.child("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    String mail = user.getEmail();
+
+                    if (mail.equals(usuario.getEmail())) {
+                        int tipo = user.getTipo();
+
+                        if(tipo==1){
+                            btnNewParada.setVisibility(View.INVISIBLE);
+                            simpleList.setEnabled(false);
+                        }
+                        else {
+                            btnNewParada.setVisibility(View.VISIBLE);
+                            simpleList.setEnabled(true);
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
 
 
     @Override
