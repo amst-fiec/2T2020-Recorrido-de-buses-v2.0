@@ -66,32 +66,6 @@ public class newParada extends AppCompatActivity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         imbSupr = (Button) findViewById(R.id.imbSupr);
 
-        mDatabase.child("Parada").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-               // Toast.makeText(Parada.this, "Error al obtener lista", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-
-
-
-
-
 
         if (isNew){
             tvTitle.setText("Nueva Parada");
@@ -100,6 +74,23 @@ public class newParada extends AppCompatActivity {
         else {
             tvTitle.setText("Editar Parada");
             imbSupr.setVisibility(View.VISIBLE);
+
+
+            mDatabase.child("Parada").child(idParada).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Toast.makeText(newParada.this, dataSnapshot.toString(), Toast.LENGTH_SHORT).show();
+                    MapsCoor mc = dataSnapshot.getValue(MapsCoor.class);
+                    edtName.setText(dataSnapshot.getKey());
+                    edtLat.setText(mc.getLat().toString());
+                    edtLon.setText(mc.getLon().toString());
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(newParada.this, "Error al obtener datos", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
 
 
