@@ -42,7 +42,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<Marker> realTimeMarkers=new ArrayList<>();
     private ArrayList<Marker> tmpRealTimeMarkersBus=new ArrayList<>();
     private ArrayList<Marker> realTimeMarkersBus=new ArrayList<>();
-    
+
     DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
