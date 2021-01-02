@@ -83,7 +83,7 @@ public class newParada extends AppCompatActivity {
             mDatabase.child("Parada").child(idParada).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Toast.makeText(newParada.this, dataSnapshot.toString(), Toast.LENGTH_SHORT).show();
+
                     MapsCoor mc = dataSnapshot.getValue(MapsCoor.class);
                     edtName.setText(dataSnapshot.getKey());
                     edtLat.setText(mc.getLat().toString());
