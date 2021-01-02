@@ -71,7 +71,8 @@ public class newParada extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    listParadas.add(snapshot.getKey());
+
+
                 }
 
 
@@ -81,26 +82,9 @@ public class newParada extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                Toast.makeText(Parada.this, "Error al obtener lista", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(Parada.this, "Error al obtener lista", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                String parada = adapterView.getItemAtPosition(i).toString();
-
-                Intent intent = new Intent(Parada.this, newParada.class);
-                intent.putExtra("isNew",false);
-                intent.putExtra("parada",parada);
-                startActivity(intent);
-                finish();
-
-            }
-        });
-
 
 
 
