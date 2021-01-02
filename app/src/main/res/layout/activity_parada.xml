@@ -81,4 +81,15 @@ tools:context=".Parada">
 </LinearLayout>
 
 
+    <ImageButton
+        android:id="@+id/btnNewParada"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/add"
+        android:layout_alignParentRight="true"
+        android:layout_margin="30dp"
+        android:layout_above="@id/BottomMenu"
+        android:onClick="toNewParada"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
