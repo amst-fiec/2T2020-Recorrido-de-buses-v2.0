@@ -42,8 +42,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<Marker> realTimeMarkers=new ArrayList<>();
     private ArrayList<Marker> tmpRealTimeMarkersBus=new ArrayList<>();
     private ArrayList<Marker> realTimeMarkersBus=new ArrayList<>();
-
-    FirebaseAuth mAuth;
+    
     DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +189,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
     }
-    
+
     @Override
     public void onBackPressed() {
 
