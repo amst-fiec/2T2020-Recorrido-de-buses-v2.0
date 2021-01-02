@@ -6,7 +6,9 @@ package com.example.recorrido_buses;
         import android.content.Intent;
         import android.os.Bundle;
         import android.view.View;
+        import android.widget.Button;
         import android.widget.EditText;
+        import android.widget.ImageButton;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -23,6 +25,8 @@ package com.example.recorrido_buses;
 public class newParada extends AppCompatActivity {
 
     private TextView tvTitle;
+
+    private Button imbSupr;
 
     private EditText edtName;
     private EditText edtLat;
@@ -46,7 +50,6 @@ public class newParada extends AppCompatActivity {
         mAuth =FirebaseAuth.getInstance();
         mDatabase= FirebaseDatabase.getInstance().getReference();
 
-
         isNew=getIntent().getBooleanExtra("isNew",true);
 
         edtName = (EditText) findViewById(R.id.edtName);
@@ -56,12 +59,18 @@ public class newParada extends AppCompatActivity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
 
 
+        imbSupr = (Button) findViewById(R.id.imbSupr);
+
         if (isNew){
             tvTitle.setText("Nueva Parada");
+            imbSupr.setVisibility(View.INVISIBLE);
         }
         else {
             tvTitle.setText("Editar Parada");
+            imbSupr.setVisibility(View.VISIBLE);
         }
+
+
 
     }
 

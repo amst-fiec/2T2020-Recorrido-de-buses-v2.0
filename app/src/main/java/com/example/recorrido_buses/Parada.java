@@ -79,14 +79,6 @@ public class Parada extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-                /*
-                idEquipo=obj.getId();
-                if(isInst){
-                    new CompruebaInstalacion().execute();
-                }else{
-                    new CompruebaReporte().execute();
-                }
-*/
             }
         });
 

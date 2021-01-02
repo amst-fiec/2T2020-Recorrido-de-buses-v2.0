@@ -167,7 +167,6 @@ public class Login extends AppCompatActivity {
             startActivity(i);
             finish();
 
-
              */
             Map<String, Object> map= new HashMap<>();
             map.put("name",user.getDisplayName());

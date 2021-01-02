@@ -60,6 +60,15 @@ tools:context=".newParada">
     android:textColor="#FFFFFF"
     android:onClick="registrar"
     />
-
+    <Button
+        android:id="@+id/imbSupr"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:text="ELIMINAR PARADA"
+        android:background="@drawable/edit_button_red"
+        android:layout_height="60dp"
+        android:textColor="#FFFFFF"
+        android:onClick="registrar"
+        />
 
 </LinearLayout>
