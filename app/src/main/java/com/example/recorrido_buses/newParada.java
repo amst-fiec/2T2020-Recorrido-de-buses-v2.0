@@ -32,7 +32,8 @@ public class newParada extends AppCompatActivity {
 
     private TextView tvTitle;
 
-    private Button imbSupr;
+    private Button btnSupr;
+    private Button btnRegistrar;
 
     private EditText edtName;
     private EditText edtLat;
@@ -64,16 +65,19 @@ public class newParada extends AppCompatActivity {
         edtLon = (EditText) findViewById(R.id.edtLon);
 
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        imbSupr = (Button) findViewById(R.id.imbSupr);
+        btnSupr = (Button) findViewById(R.id.btnSupr);
+        btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
 
 
         if (isNew){
             tvTitle.setText("Nueva Parada");
-            imbSupr.setVisibility(View.INVISIBLE);
+            btnSupr.setVisibility(View.INVISIBLE);
         }
         else {
             tvTitle.setText("Editar Parada");
-            imbSupr.setVisibility(View.VISIBLE);
+            btnRegistrar.setText("EDITAR");
+
+            btnSupr.setVisibility(View.VISIBLE);
 
 
             mDatabase.child("Parada").child(idParada).addValueEventListener(new ValueEventListener() {
@@ -90,11 +94,7 @@ public class newParada extends AppCompatActivity {
                     Toast.makeText(newParada.this, "Error al obtener datos", Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
-
-
-
     }
 
 

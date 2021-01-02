@@ -195,7 +195,11 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public void toMapa() {
+    public void toMapa(String tipo) {
+        
+
+
+
         Intent i = new Intent(Login.this,Mapa.class);
         startActivity(i);
         finish();
