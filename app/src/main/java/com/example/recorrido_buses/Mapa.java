@@ -3,6 +3,9 @@ package com.example.recorrido_buses;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
+
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +15,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,16 +41,22 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<Marker> realTimeMarkers=new ArrayList<>();
     private ArrayList<Marker> tmpRealTimeMarkersBus=new ArrayList<>();
     private ArrayList<Marker> realTimeMarkersBus=new ArrayList<>();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
         tgbtn=(ToggleButton) findViewById(R.id.tgBtn1);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        db_reference = FirebaseDatabase.getInstance().getReference();
+        int status= GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+        if (status== ConnectionResult.SUCCESS){
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+            db_reference = FirebaseDatabase.getInstance().getReference();
+        }else{
+            Dialog dialog =GooglePlayServicesUtil.getErrorDialog(status,(Activity)getApplicationContext(),10);
+            dialog.show();
+        }
     }
 
     public void toParadas(View view) {
@@ -120,7 +131,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-
+        float zoomLevel=12;
+        LatLng Ecuador=new LatLng(-2.1600473902083617, -79.92242474890296);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Ecuador,zoomLevel));
 
     }
 
