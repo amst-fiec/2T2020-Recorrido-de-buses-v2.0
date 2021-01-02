@@ -96,5 +96,8 @@
             android:layout_height="30dp"
             android:background="@drawable/buses"/>
     </LinearLayout>
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 </RelativeLayout>

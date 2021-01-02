@@ -23,10 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-<<<<<<< HEAD
-=======
 import com.google.firebase.auth.FirebaseUser;
->>>>>>> c50e5d337c9164ed49e3ebb01b25a12c0c5cb203
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,9 +51,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         setContentView(R.layout.activity_mapa);
 
         tgbtn=(ToggleButton) findViewById(R.id.tgBtn1);
-
-
-
         int status= GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if (status== ConnectionResult.SUCCESS){
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -118,9 +112,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
 
 
-
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
@@ -153,7 +144,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-        float zoomLevel=12;
+        float zoomLevel=10;
         LatLng Ecuador=new LatLng(-2.1600473902083617, -79.92242474890296);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Ecuador,zoomLevel));
 
@@ -170,10 +161,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         }
     }
 
-
-
     public void isUser() {
-
 
         FirebaseUser usuario = mAuth.getCurrentUser();
 
@@ -202,12 +190,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
     }
-
-
-
-
-
-
+    
     @Override
     public void onBackPressed() {
 
