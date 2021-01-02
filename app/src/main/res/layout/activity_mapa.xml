@@ -33,6 +33,16 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"/>
 
+        <ImageButton
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="200dp"
+            android:background="@drawable/exit"
+            android:onClick="cerrarSesion" />
+
         <ToggleButton
             android:id="@+id/tgBtn1"
             android:layout_width="wrap_content"

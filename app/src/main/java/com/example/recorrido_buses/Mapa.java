@@ -1,9 +1,7 @@
 package com.example.recorrido_buses;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -11,10 +9,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.Switch;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +33,8 @@ import java.util.ArrayList;
 
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     ToggleButton tgbtn;
+    private ImageButton mButtonSignOut;
+    private FirebaseAuth mAuth;
     private GoogleMap mMap;
     private DatabaseReference db_reference;
     private ArrayList<Marker> tmpRealTimeMarkers=new ArrayList<>();
@@ -46,6 +46,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapa);
+
         tgbtn=(ToggleButton) findViewById(R.id.tgBtn1);
         int status= GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if (status== ConnectionResult.SUCCESS){
@@ -65,6 +66,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         finish();
     }
 
+    public void cerrarSesion(View view){
+        FirebaseAuth.getInstance().signOut();
+        finish();
+        Intent intent = new Intent(Mapa.this, Login.class);
+        intent.putExtra("msg", "cerrarSesion");
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
