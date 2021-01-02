@@ -101,5 +101,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             Toast.makeText(Mapa.this,"GSM",Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }
 
