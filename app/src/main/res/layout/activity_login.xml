@@ -54,8 +54,8 @@
         android:background="@drawable/edit_text"
         android:drawableLeft="@drawable/google2"
         android:onClick="iniciarSesion"
-        android:paddingLeft="75dp"
-        android:paddingRight="75dp"
+        android:paddingLeft="65dp"
+        android:paddingRight="65dp"
         android:text="Ingresar con google"
         android:textColor="#0F106D" />
 
