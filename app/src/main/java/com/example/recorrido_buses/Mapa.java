@@ -73,6 +73,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         finish();
     }
 
+    public void toConductor(View view) {
+        Intent intent = new Intent(Mapa.this, Conductor.class);
+        startActivity(intent);
+        finish();
+    }
     public void cerrarSesion(View view){
         FirebaseAuth.getInstance().signOut();
         finish();

@@ -94,6 +94,7 @@
             android:id="@+id/btnBus"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:onClick="toConductor"
             android:background="@drawable/buses"/>
     </LinearLayout>
 

@@ -6,7 +6,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="#FFFFFF"
 android:gravity="center"
-android:padding="30dp"
+android:paddingHorizontal="30dp"
 android:orientation="vertical"
 tools:context=".newParada">
 <TextView
@@ -14,7 +14,7 @@ tools:context=".newParada">
     android:layout_marginTop="20dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="50sp"
+    android:textSize="40sp"
     android:gravity="center_horizontal"
     android:textColor="#0F106D"
     android:text="Nueva Parada"
