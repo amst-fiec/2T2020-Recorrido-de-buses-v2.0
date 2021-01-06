@@ -17,7 +17,7 @@ public class Bienvenidos extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Bienvenidos.this, Conductor.class);
+                Intent intent = new Intent(Bienvenidos.this, Login.class);
                 startActivity(intent);
                 finish();
             }
