@@ -124,7 +124,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        db_reference.child("Bus").addValueEventListener(new ValueEventListener() {
+        db_reference.child("HistorialBuses").child("GYE2021").child("SIGFOX").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -153,7 +153,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         });
 
 
-        db_reference.child("Parada").addValueEventListener(new ValueEventListener() {
+        db_reference.child("Rutas").child("Alban Borja").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (Marker marker : realTimeMarkersBus) {
@@ -201,9 +201,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     mMap.addMarker(new MarkerOptions().position(miPosicion).title("Aqui estoy yo"));
 
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(latitudOrigen,longitudOrigen))      // Sets the center of the map to Mountain View
+                            .target(new LatLng(latitudOrigen,longitudOrigen))
                             .zoom(15)
-                            .build();                   // Creates a CameraPosition from the builder
+                            .build();
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
 
@@ -211,7 +211,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-        String url ="https://maps.googleapis.com/maps/api/directions/json?origin=-1.8095247365851574,-79.54367644431079&destination=-1.8937634665996397,-79.55356814988951&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
+        String url ="https://maps.googleapis.com/maps/api/directions/json?origin=-2.144610446888712,-79.96498202864169&destination=-2.17014440209533,-79.91818685224986&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
 
         RequestQueue queue = Volley.newRequestQueue(Mapa.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -262,7 +262,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         String polyline = ""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
                         Log.i("end",""+polyline);
                         List<LatLng> list = PolyUtil.decode(polyline);
-                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.BLUE).width(12));
+                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.BLUE).width(14));
 
                     }
 
