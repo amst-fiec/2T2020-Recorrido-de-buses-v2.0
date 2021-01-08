@@ -66,6 +66,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<Marker> realTimeMarkers=new ArrayList<>();
     private ArrayList<Marker> tmpRealTimeMarkersBus=new ArrayList<>();
     private ArrayList<Marker> realTimeMarkersBus=new ArrayList<>();
+    public  ArrayList<String> listSigfox=new ArrayList<>();
+    public  ArrayList<String> listGSM=new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,10 +281,42 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         if(tgbtn.isChecked())
         {
             Toast.makeText(Mapa.this,"SigFox",Toast.LENGTH_SHORT).show();
+            DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("HistorialBuses").child("GYE2021").child("SIGFOX");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listSigfox.clear();
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                        listSigfox.add(snapshot.getValue().toString());
+                    }
+                    System.out.println(listSigfox);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
         else
         {
             Toast.makeText(Mapa.this,"GSM",Toast.LENGTH_SHORT).show();
+            DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("HistorialBuses").child("GYE2021").child("GSM");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listGSM.clear();
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                        listGSM.add(snapshot.getValue().toString());
+                    }
+                    System.out.println(listGSM);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
     }
 
