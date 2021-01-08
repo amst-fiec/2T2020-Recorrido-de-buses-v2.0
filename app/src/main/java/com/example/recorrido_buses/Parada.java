@@ -53,7 +53,7 @@ public class Parada extends AppCompatActivity {
         btnNewParada = (ImageButton)findViewById(R.id.btnNewParada);
 
 
-        db_reference.child("Parada").addValueEventListener(new ValueEventListener() {
+        db_reference.child("Rutas").child("Alban Borja").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 

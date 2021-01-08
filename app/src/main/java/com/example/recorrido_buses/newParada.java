@@ -80,7 +80,7 @@ public class newParada extends AppCompatActivity {
             btnSupr.setVisibility(View.VISIBLE);
 
 
-            mDatabase.child("Parada").child(idParada).addValueEventListener(new ValueEventListener() {
+            mDatabase.child("Rutas").child("Alban Borja").child(idParada).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
