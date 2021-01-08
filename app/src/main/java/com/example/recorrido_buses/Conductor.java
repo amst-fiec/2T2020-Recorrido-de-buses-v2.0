@@ -121,6 +121,18 @@ public class Conductor extends AppCompatActivity {
         finish();
     }
 
+    public void toParadas(View view) {
+        Intent intent = new Intent(Conductor.this, Parada.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void toMapa(View view) {
+        Intent intent = new Intent(Conductor.this, Mapa.class);
+        startActivity(intent);
+        finish();
+    }
+
     public String noNull(Object obj){
         if(obj==null){
             return "";

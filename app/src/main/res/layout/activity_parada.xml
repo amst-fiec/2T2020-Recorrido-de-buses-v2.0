@@ -64,11 +64,13 @@ tools:context=".Parada">
         android:id="@+id/btnMapa"
         android:layout_width="25dp"
         android:layout_height="30dp"
+        android:onClick="toMapa"
         android:background="@drawable/mapa"
         android:layout_marginHorizontal="80dp"
         />
     <ImageButton
         android:id="@+id/btnBus"
+        android:onClick="toConductor"
         android:layout_width="28dp"
         android:layout_height="30dp"
         android:background="@drawable/perfil"

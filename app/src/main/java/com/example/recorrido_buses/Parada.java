@@ -106,6 +106,18 @@ public class Parada extends AppCompatActivity {
         intent.putExtra("isNew",true);
         finish();
     }
+    public void toMapa(View view) {
+        Intent intent = new Intent(Parada.this, Mapa.class);
+        startActivity(intent);
+        intent.putExtra("isNew",true);
+        finish();
+    }
+    public void toConductor(View view) {
+        Intent intent = new Intent(Parada.this, Conductor.class);
+        startActivity(intent);
+        intent.putExtra("isNew",true);
+        finish();
+    }
 
     public void isUser() {
 
