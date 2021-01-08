@@ -154,7 +154,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         db_reference.child("Rutas").child("Alban Borja").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (Marker marker : realTimeMarkersBus) {
+                for (Marker marker : realTimeMarkers) {
                     marker.remove();
                 }
 
@@ -209,7 +209,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-        String url ="https://maps.googleapis.com/maps/api/directions/json?origin=-2.144610446888712,-79.96498202864169&destination=-2.17014440209533,-79.91818685224986&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
+        String url ="https://maps.googleapis.com/maps/api/directions/json?origin=-2.144610446888712,-79.96498202864169&destination=-2.1702576319691707,-79.91816793723682&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
 
         RequestQueue queue = Volley.newRequestQueue(Mapa.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
