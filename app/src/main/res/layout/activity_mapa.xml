@@ -83,10 +83,10 @@
 
         <ImageButton
             android:id="@+id/btnBus"
-            android:layout_width="30dp"
+            android:layout_width="28dp"
             android:layout_height="30dp"
             android:onClick="toConductor"
-            android:background="@drawable/buses"/>
+            android:background="@drawable/perfil"/>
     </LinearLayout>
 
 </RelativeLayout>
