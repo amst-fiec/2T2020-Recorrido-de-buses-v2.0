@@ -2,6 +2,7 @@ package com.example.recorrido_buses;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -280,6 +281,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void switchButton(View view) {
         if(tgbtn.isChecked())
         {
+
+            setColorToggle(1);
+
             Toast.makeText(Mapa.this,"SigFox",Toast.LENGTH_SHORT).show();
 
             db_reference.child("HistorialBuses").child("GYE2021").child("SIGFOX").addValueEventListener(new ValueEventListener() {
@@ -311,6 +315,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         }
         else
         {
+
+            setColorToggle(2);
+
             Toast.makeText(Mapa.this,"GSM",Toast.LENGTH_SHORT).show();
             db_reference.child("HistorialBuses").child("GYE2021").child("GSM").addValueEventListener(new ValueEventListener() {
 
@@ -338,6 +345,23 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
+        }
+    }
+
+
+    public void setColorToggle(int i){
+        int draw=0;
+        if (i==1){
+            draw=R.drawable.edit_button_red;
+        }
+        else {
+            draw=R.drawable.edit_button;
+        }
+        final int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            tgbtn.setBackgroundDrawable(ContextCompat.getDrawable(this, draw ));
+        } else {
+            tgbtn.setBackground(ContextCompat.getDrawable(this, draw));
         }
     }
 
