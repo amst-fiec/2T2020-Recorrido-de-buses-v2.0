@@ -68,6 +68,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<Marker> realTimeMarkersBus=new ArrayList<>();
     public  ArrayList<String> listSigfox=new ArrayList<>();
     public  ArrayList<String> listGSM=new ArrayList<>();
+    public  ArrayList<String> listSigfoxHora=new ArrayList<>();
+    public  ArrayList<String> listGSMHora=new ArrayList<>();
 
 
 
@@ -286,11 +288,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listSigfox.clear();
+                    listSigfoxHora.clear();
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                         listSigfox.add(snapshot.getValue().toString());
-                        listSigfoxHora.add(snapshot.getKey())
+                        listSigfoxHora.add(snapshot.getKey());
                     }
+                    System.out.println(listSigfoxHora);
                     System.out.println(listSigfox);
+
                 }
 
                 @Override
@@ -307,10 +312,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     listGSM.clear();
+                    listGSMHora.clear();
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                         listGSM.add(snapshot.getValue().toString());
+                        listGSMHora.add(snapshot.getKey());
                     }
+                    System.out.println(listGSMHora);
                     System.out.println(listGSM);
+
                 }
 
                 @Override
@@ -321,6 +330,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         }
     }
+
 
     public void isUser() {
 
