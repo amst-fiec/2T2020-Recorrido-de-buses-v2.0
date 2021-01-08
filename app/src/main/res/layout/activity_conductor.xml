@@ -15,7 +15,6 @@
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/menu_style_bottom"
-
         >
 
         <ImageView
@@ -26,14 +25,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp" />
 
-        <ImageButton
-            android:id="@+id/btnMenu"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/menu"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp" />
 
     </RelativeLayout>
 

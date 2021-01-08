@@ -25,30 +25,21 @@
             android:layout_marginLeft="15dp"/>
 
         <ImageButton
-            android:id="@+id/btnMenu"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/menu"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"/>
-
-        <ImageButton
             android:id="@+id/btnCerrarSesion"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:background="@drawable/exit"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="185dp"
-            android:background="@drawable/exit"
-            android:onClick="cerrarSesion" />
+            android:layout_marginRight="15dp"
+            android:onClick="cerrarSesion"/>
 
         <ToggleButton
             android:id="@+id/tgBtn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="switchButton"
-            android:layout_toLeftOf="@+id/btnMenu"
+            android:layout_toLeftOf="@+id/btnCerrarSesion"
             android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
             android:textOff="GSM"
