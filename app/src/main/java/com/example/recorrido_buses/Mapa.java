@@ -56,6 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
+
     ToggleButton tgbtn;
     private ImageButton mButtonSignOut;
     private FirebaseAuth mAuth;
@@ -66,7 +67,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<Marker> tmpRealTimeMarkersBus=new ArrayList<>();
     private ArrayList<Marker> realTimeMarkersBus=new ArrayList<>();
 
-    DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,15 +79,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
             db_reference = FirebaseDatabase.getInstance().getReference();
+            mAuth = FirebaseAuth.getInstance();
+            isUser();
         }else{
             Dialog dialog =GooglePlayServicesUtil.getErrorDialog(status,(Activity)getApplicationContext(),10);
             dialog.show();
         }
 
-
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        isUser();
     }
 
     public void toParadas(View view) {
@@ -290,7 +288,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         FirebaseUser usuario = mAuth.getCurrentUser();
 
-        mDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+        db_reference.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
