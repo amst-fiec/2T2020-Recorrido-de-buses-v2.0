@@ -56,6 +56,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import Clases.User;
+
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     ToggleButton tgbtn;
@@ -73,6 +75,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public  ArrayList<String> listGSMHora=new ArrayList<>();
 
 
+    private int userType=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +91,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             db_reference = FirebaseDatabase.getInstance().getReference();
             mAuth = FirebaseAuth.getInstance();
             isUser();
+
+
+
         }else{
             Dialog dialog =GooglePlayServicesUtil.getErrorDialog(status,(Activity)getApplicationContext(),10);
             dialog.show();
@@ -102,7 +108,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
 
     public void toConductor(View view) {
-        Intent intent = new Intent(Mapa.this, Conductor.class);
+        Intent intent;
+        if (userType==0){
+            intent = new Intent(Mapa.this, Conductor.class);
+        }
+        else {
+
+            intent = new Intent(Mapa.this, Perfil.class);
+        }
+
         startActivity(intent);
         finish();
     }
@@ -369,22 +383,19 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void isUser() {
 
         FirebaseUser usuario = mAuth.getCurrentUser();
-
-        db_reference.child("Users").addValueEventListener(new ValueEventListener() {
+        db_reference.child("Users").child(usuario.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    String mail = user.getEmail();
+                User user = dataSnapshot.getValue(User.class);
 
-                    if (mail.equals(usuario.getEmail())) {
-                        int tipo = user.getTipo();
-
-                        Toast.makeText(Mapa.this, "El usuario es "+tipo, Toast.LENGTH_SHORT).show();
-
-                    }
+                if (user != null) {
+                    userType = user.getTipo();
                 }
+                Toast.makeText(Mapa.this, "El usuario es "+userType, Toast.LENGTH_SHORT).show();
+
+
+
             }
 
             @Override
