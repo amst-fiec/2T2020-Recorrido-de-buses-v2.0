@@ -128,7 +128,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        db_reference.child("HistorialBuses").child("GYE2021").child("SIGFOX").addValueEventListener(new ValueEventListener() {
+        db_reference.child("HistorialBuses").child("GYE2021").child("GSM").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,16 +136,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     marker.remove();
                 }
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    if(snapshot.getKey().equals("1")){
 
-                        MapsCoor mc = snapshot.getValue(MapsCoor.class);
-                        Double lat = mc.getLat();
-                        Double lon = mc.getLon();
-                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title(snapshot.getKey());
-                        markerOptions.position(new LatLng(lat, lon));
-                        System.out.print(lat);
-                        tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
-                    }
+                    MapsCoor mc = snapshot.getValue(MapsCoor.class);
+                    Double lat = mc.getLat();
+                    Double lon = mc.getLon();
+                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title(snapshot.getKey());
+                    markerOptions.position(new LatLng(lat, lon));
+                    System.out.print(lat);
+                    tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
+
                 }
                 realTimeMarkersBus.clear();
                 realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
@@ -155,7 +154,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
 
         db_reference.child("Rutas").child("Alban Borja").addValueEventListener(new ValueEventListener() {
             @Override
@@ -283,51 +281,63 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         if(tgbtn.isChecked())
         {
             Toast.makeText(Mapa.this,"SigFox",Toast.LENGTH_SHORT).show();
-            DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("HistorialBuses").child("GYE2021").child("SIGFOX");
-            reference.addValueEventListener(new ValueEventListener() {
+
+            db_reference.child("HistorialBuses").child("GYE2021").child("SIGFOX").addValueEventListener(new ValueEventListener() {
+
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listSigfox.clear();
-                    listSigfoxHora.clear();
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                        listSigfox.add(snapshot.getValue().toString());
-                        listSigfoxHora.add(snapshot.getKey());
+                    for (Marker marker:realTimeMarkersBus){
+                        marker.remove();
                     }
-                    System.out.println(listSigfoxHora);
-                    System.out.println(listSigfox);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
 
+                        MapsCoor mc = snapshot.getValue(MapsCoor.class);
+                        Double lat = mc.getLat();
+                        Double lon = mc.getLon();
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title(snapshot.getKey());
+                        markerOptions.position(new LatLng(lat, lon));
+                        System.out.print(lat);
+                        tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
+
+                    }
+                    realTimeMarkersBus.clear();
+                    realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
         }
         else
         {
             Toast.makeText(Mapa.this,"GSM",Toast.LENGTH_SHORT).show();
-            DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("HistorialBuses").child("GYE2021").child("GSM");
-            reference.addValueEventListener(new ValueEventListener() {
+            db_reference.child("HistorialBuses").child("GYE2021").child("GSM").addValueEventListener(new ValueEventListener() {
+
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listGSM.clear();
-                    listGSMHora.clear();
-                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                        listGSM.add(snapshot.getValue().toString());
-                        listGSMHora.add(snapshot.getKey());
+                    for (Marker marker:realTimeMarkersBus){
+                        marker.remove();
                     }
-                    System.out.println(listGSMHora);
-                    System.out.println(listGSM);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
 
+                        MapsCoor mc = snapshot.getValue(MapsCoor.class);
+                        Double lat = mc.getLat();
+                        Double lon = mc.getLon();
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title(snapshot.getKey());
+                        markerOptions.position(new LatLng(lat, lon));
+                        System.out.print(lat);
+                        tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
+
+                    }
+                    realTimeMarkersBus.clear();
+                    realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
             });
-
         }
     }
 
