@@ -163,12 +163,21 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     popup = getLayoutInflater().inflate(R.layout.popupmaps, null);
                 }
 
-                TextView tv = (TextView) popup.findViewById(R.id.title);
+
+                TextView tvTitle = (TextView) popup.findViewById(R.id.title);
+                TextView tvSnippet = (TextView) popup.findViewById(R.id.snippet);
                 ImageView iv = (ImageView) popup.findViewById(R.id.icon);
-                iv.setImageResource(R.drawable.google2);
-                tv.setText(marker.getTitle());
-                tv = (TextView) popup.findViewById(R.id.snippet);
-                tv.setText(marker.getSnippet());
+
+                if(tmpRealTimeMarkersBus.contains(marker)){
+                    iv.setImageResource(R.drawable.bus2);
+                }
+                else{
+
+                    iv.setImageResource(R.drawable.punto2);
+                }
+
+                tvTitle.setText(marker.getTitle());
+                tvSnippet.setText(marker.getSnippet());
 
                 return (popup);
             }
@@ -249,7 +258,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 MapsCoor mc = dataSnapshot.child(key).getValue(MapsCoor.class);
                 Double lat = mc.getLat();
                 Double lon = mc.getLon();
-                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title("GYE2021");
+                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title("GYE2021").snippet("Cap: 25");
                 markerOptions.position(new LatLng(lat, lon));
                 System.out.print(lat);
                 tmpRealTimeMarkersBus.clear();
@@ -324,7 +333,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         JSONArray jLegs = ((JSONObject)(jRoutes.get(0))).getJSONArray("legs");
                         int jSteps = (int) ((JSONObject) ((JSONObject)jLegs.get(0)).get("duration")).get("value");
 
-                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).snippet(String.valueOf(jSteps));
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(key).snippet(String.valueOf(jSteps));
                         markerOptions.position(new LatLng(latF, lonF));
                         tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
 
