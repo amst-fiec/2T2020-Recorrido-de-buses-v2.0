@@ -52,7 +52,6 @@ public class Conductor extends AppCompatActivity {
     private String placa;
     private String capacidad;
 
-    private String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,37 +59,81 @@ public class Conductor extends AppCompatActivity {
         setContentView(R.layout.activity_conductor);
 
         driverRef = FirebaseAuth.getInstance().getCurrentUser();
-        userId = driverRef.getUid();
-
-        //userId="NjCqTX1WCWQKt4PigN8ATigN02i2";
-        if (getIntent().hasExtra("id")){
-
-            userId=getIntent().getStringExtra("id");
-        }
-        else {
-            userId = driverRef.getUid();
-        }
-
-
-
-        if (getIntent().hasExtra("id")){
-
-            idUser=getIntent().getStringExtra("id");
-        }
-
-
-
 
         mAuth = FirebaseAuth.getInstance();
         db_reference = FirebaseDatabase.getInstance().getReference();
-
 
         tvtName = (TextView) findViewById(R.id.tvtNombre);
         tvtEdad = (TextView) findViewById(R.id.tvtEdad);
         tvtPlaca = (TextView) findViewById(R.id.tvtPlaca);
         tvtCapacidad = (TextView) findViewById(R.id.tvtCapacidad);
-        btnPhoto=(ImageView)findViewById(R.id.btnPhoto);
+        btnPhoto = (ImageView) findViewById(R.id.btnPhoto);
 
+        userId = driverRef.getUid();
+
+        //userId="NjCqTX1WCWQKt4PigN8ATigN02i2";
+        if (getIntent().hasExtra("id")) {
+
+            placa = getIntent().getStringExtra("id");
+
+
+            db_reference.child("Buses").child(placa).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                    Bus bus = dataSnapshot.getValue(Bus.class);
+
+
+                    capacidad = noNull(bus.getCapacidad());
+
+
+                    db_reference.child("Users").child(bus.getConductor()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            Driver driver = dataSnapshot.getValue(Driver.class);
+
+                            name = noNull(driver.getName());
+                            edad = noNull(driver.getEdad());
+
+                            try {
+                                photo = noNull(driver.getPhoto());
+                                Picasso.with(Conductor.this).load(photo).transform(new CircleTransform()).into(btnPhoto);
+                            } catch (Exception e) {
+
+
+                            }
+                            tvtName.setText(name);
+                            tvtEdad.setText(edad);
+                            tvtCapacidad.setText(capacidad);
+                            tvtPlaca.setText(placa);
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+        }
+        else {
+            getUser();
+        }
+    }
+
+    private void getUser(){
 
         db_reference.child("Users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -105,7 +148,7 @@ public class Conductor extends AppCompatActivity {
                     photo = noNull(driver.getPhoto());
                     Picasso.with(Conductor.this).load(photo).transform(new CircleTransform()).into(btnPhoto);
                 } catch (Exception e) {
-                    
+
 
                 }
 
@@ -114,7 +157,7 @@ public class Conductor extends AppCompatActivity {
                 tvtEdad.setText(edad);
 
 
-                db_reference.child("Bus").addValueEventListener(new ValueEventListener() {
+                db_reference.child("Buses").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 

@@ -2,8 +2,8 @@ package Clases;
 
 public class Bus {
 
-    private int capacidad;
-    private String conductor;
+    private int Capacidad;
+    private String Conductor;
     private double lat;
     private double lon;
     private String placa;
@@ -13,19 +13,19 @@ public class Bus {
 
 
     public int getCapacidad() {
-        return capacidad;
+        return Capacidad;
     }
 
     public void setCapacidad(int capacidad) {
-        this.capacidad = capacidad;
+        this.Capacidad = capacidad;
     }
 
     public String getConductor() {
-        return conductor;
+        return Conductor;
     }
 
     public void setConductor(String conductor) {
-        this.conductor = conductor;
+        this.Conductor = conductor;
     }
 
     public double getLat() {
