@@ -35,6 +35,8 @@ public class Parada extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
+    private int userType=1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +111,18 @@ public class Parada extends AppCompatActivity {
         intent.putExtra("isNew",true);
         finish();
     }
+
     public void toConductor(View view) {
-        Intent intent = new Intent(Parada.this, Conductor.class);
+        Intent intent;
+        if (userType==0){
+            intent = new Intent(Parada.this, Conductor.class);
+        }
+        else {
+
+            intent = new Intent(Parada.this, Perfil.class);
+        }
+
         startActivity(intent);
-        intent.putExtra("isNew",true);
         finish();
     }
 
@@ -121,26 +131,23 @@ public class Parada extends AppCompatActivity {
 
         FirebaseUser usuario = mAuth.getCurrentUser();
 
-        db_reference.child("Users").addValueEventListener(new ValueEventListener() {
+        db_reference.child("Users").child(usuario.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    String mail = user.getEmail();
+                User user = dataSnapshot.getValue(User.class);
 
-                    if (mail.equals(usuario.getEmail())) {
-                        int tipo = user.getTipo();
+                if (user != null) {
+                    userType = user.getTipo();
 
-                        if(tipo==1){
-                            btnNewParada.setVisibility(View.INVISIBLE);
-                            simpleList.setEnabled(false);
-                        }
-                        else {
-                            btnNewParada.setVisibility(View.VISIBLE);
-                            simpleList.setEnabled(true);
-                        }
+                    if(userType==1){
+                        btnNewParada.setVisibility(View.INVISIBLE);
+                        simpleList.setEnabled(false);
 
+                    }
+                    else {
+                        btnNewParada.setVisibility(View.VISIBLE);
+                        simpleList.setEnabled(true);
                     }
                 }
             }
@@ -150,6 +157,7 @@ public class Parada extends AppCompatActivity {
 
             }
         });
+
 
 
     }
