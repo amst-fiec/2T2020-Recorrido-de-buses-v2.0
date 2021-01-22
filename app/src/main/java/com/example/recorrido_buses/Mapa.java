@@ -19,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -45,7 +44,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,7 +51,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
 
-import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -333,7 +330,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         JSONArray jLegs = ((JSONObject)(jRoutes.get(0))).getJSONArray("legs");
                         int jSteps = (int) ((JSONObject) ((JSONObject)jLegs.get(0)).get("duration")).get("value");
 
-                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(key).snippet(String.valueOf(jSteps));
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(key).snippet(calcularTiempo(jSteps));
                         markerOptions.position(new LatLng(latF, lonF));
                         tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
 
@@ -353,6 +350,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         queue.add(stringRequest);
 
+    }
+
+    public String calcularTiempo(int num) {
+
+        int hor = (int) num/3600;
+        int min = (int) (num/60 - hor*60);;
+
+        return  String.valueOf(hor)+" Horas y "+String.valueOf(min)+" Minutos";
     }
 
     private void trazarRuta() {
