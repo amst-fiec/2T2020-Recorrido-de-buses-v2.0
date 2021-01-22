@@ -235,7 +235,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                 realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
 
-                mostrarParadas();
+                mostrarParadas(lat,lon);
                 trazarRuta();
             }
 
@@ -245,7 +245,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         });
 
     }
-    private void mostrarParadas(){
+    private void mostrarParadas(Double latB, Double lonB){
         db_reference.child("Rutas").child("Alban Borja").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -258,9 +258,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         MapsCoor mc = snapshot.getValue(MapsCoor.class);
                         Double lat = mc.getLat();
                         Double lon = mc.getLon();
-                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(snapshot.getKey());
-                        markerOptions.position(new LatLng(lat, lon));
-                        tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
+
+
+                        getDistance(latB,lonB,lat,lon,snapshot.getKey());
+
                     }
 
                     realTimeMarkers.clear();
@@ -284,7 +285,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
 
 
-    private void getDistance(Double latI,Double lonI,Double latF,Double lonF) {
+    private void getDistance(double latI,double lonI,double latF,double lonF,String key) {
 
         String url ="https://maps.googleapis.com/maps/api/directions/json?origin="+latI+","+lonI+"&destination="+latF+","+lonF+"&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
 
@@ -293,40 +294,24 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onResponse(String response) {
 
-                try {
-                    JSONObject jso = new JSONObject(response);
 
                     try {
+                        JSONObject jso = new JSONObject(response);
                         JSONArray jRoutes = jso.getJSONArray("routes");
-                        for (int i=0; i<jRoutes.length();i++){
-                            JSONArray jLegs = ((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
-                            for (int j=0; j<jLegs.length();j++){
+                        JSONArray jLegs = ((JSONObject)(jRoutes.get(0))).getJSONArray("legs");
+                        int jSteps = (int) ((JSONObject) ((JSONObject)jLegs.get(0)).get("duration")).get("value");
 
-                                JSONArray jSteps = ((JSONObject)jLegs.get(j)).getJSONArray("steps");
 
-                                for (int k = 0; k<jSteps.length();k++){
 
-                                    /*
-                                    String polyline = ""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
-                                    Log.i("end",""+polyline);
-                                    List<LatLng> list = PolyUtil.decode(polyline);
-                                    mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.BLUE).width(10));
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(String.valueOf(jSteps));
+                        markerOptions.position(new LatLng(latF, lonF));
+                        tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
 
-                                     */
-                                }
 
-                            }
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                            } catch (JSONException jsonException) {
+                        jsonException.printStackTrace();
                     }
 
-                    Log.i("jsonRuta: ",""+response);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
             }
         }, new Response.ErrorListener() {
