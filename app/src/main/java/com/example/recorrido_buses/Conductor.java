@@ -52,6 +52,7 @@ public class Conductor extends AppCompatActivity {
     private String placa;
     private String capacidad;
 
+    private String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,12 @@ public class Conductor extends AppCompatActivity {
             userId = driverRef.getUid();
         }
 
+
+
+        if (getIntent().hasExtra("id")){
+
+            idUser=getIntent().getStringExtra("id");
+        }
 
 
 

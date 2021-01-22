@@ -18,7 +18,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TableLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -43,7 +44,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,7 +51,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
 
-import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,8 +79,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public  ArrayList<String> listGSM=new ArrayList<>();
     public  ArrayList<String> listSigfoxHora=new ArrayList<>();
     public  ArrayList<String> listGSMHora=new ArrayList<>();
-
-
+    private View popup = null;
     private int userType=1;
 
     @Override
@@ -150,6 +148,37 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                if (popup == null) {
+                    popup = getLayoutInflater().inflate(R.layout.popupmaps, null);
+                }
+
+
+                TextView tvTitle = (TextView) popup.findViewById(R.id.title);
+                TextView tvSnippet = (TextView) popup.findViewById(R.id.snippet);
+                ImageView iv = (ImageView) popup.findViewById(R.id.icon);
+
+                if(tmpRealTimeMarkersBus.contains(marker)){
+
+                    Intent intent = new Intent(Mapa.this, Conductor.class);
+                    intent.putExtra("id",marker.getTitle());
+                    startActivity(intent);
+                    finish();
+                }
+
+                tvTitle.setText(marker.getTitle());
+                tvSnippet.setText(marker.getSnippet());
+
+                return (popup);
+            }
+        });
 
         mostrarBus("GSM");
 
@@ -226,7 +255,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 MapsCoor mc = dataSnapshot.child(key).getValue(MapsCoor.class);
                 Double lat = mc.getLat();
                 Double lon = mc.getLon();
-                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title("GYE2021");
+                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title("GYE2021").snippet("Cap: 25");
                 markerOptions.position(new LatLng(lat, lon));
                 System.out.print(lat);
                 tmpRealTimeMarkersBus.clear();
@@ -301,9 +330,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         JSONArray jLegs = ((JSONObject)(jRoutes.get(0))).getJSONArray("legs");
                         int jSteps = (int) ((JSONObject) ((JSONObject)jLegs.get(0)).get("duration")).get("value");
 
-
-
-                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(String.valueOf(jSteps));
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(key).snippet(calcularTiempo(jSteps));
                         markerOptions.position(new LatLng(latF, lonF));
                         tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
 
@@ -324,6 +351,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         queue.add(stringRequest);
 
     }
+
+    public String calcularTiempo(int num) {
+
+        int hor = (int) num/3600;
+        int min = (int) (num/60 - hor*60);;
+
+        return  String.valueOf(hor)+" Horas y "+String.valueOf(min)+" Minutos";
+    }
+
     private void trazarRuta() {
 
         String url ="https://maps.googleapis.com/maps/api/directions/json?origin=-2.144610446888712,-79.96498202864169&destination=-2.1702576319691707,-79.91816793723682&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
