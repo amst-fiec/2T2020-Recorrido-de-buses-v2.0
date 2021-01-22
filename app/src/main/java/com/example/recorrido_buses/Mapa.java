@@ -169,11 +169,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 ImageView iv = (ImageView) popup.findViewById(R.id.icon);
 
                 if(tmpRealTimeMarkersBus.contains(marker)){
-                    iv.setImageResource(R.drawable.bus2);
-                }
-                else{
 
-                    iv.setImageResource(R.drawable.punto2);
+                    Intent intent = new Intent(Mapa.this, Conductor.class);
+                    intent.putExtra("id",marker.getTitle());
+                    startActivity(intent);
+                    finish();
                 }
 
                 tvTitle.setText(marker.getTitle());
