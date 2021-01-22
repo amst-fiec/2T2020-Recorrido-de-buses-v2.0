@@ -68,11 +68,9 @@
                 android:id="@+id/btnPhoto"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/profile"
+                android:layout_centerInParent="true"
                 android:layout_marginHorizontal="80dp"
-                />
+                android:background="@drawable/profile" />
 
         </RelativeLayout>
 

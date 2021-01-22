@@ -5,7 +5,7 @@ public class Driver {
 
     private String name;
     private int edad;
-
+    private String photo;
 
     public Driver() {
     }
@@ -19,6 +19,10 @@ public class Driver {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhoto() {
+        return photo;
     }
 
     public int getEdad() {
