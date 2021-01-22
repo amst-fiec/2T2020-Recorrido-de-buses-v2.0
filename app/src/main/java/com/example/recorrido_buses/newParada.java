@@ -125,7 +125,7 @@ public class newParada extends AppCompatActivity {
         map.put("lat",lat);
         map.put("lon",lon);
 
-        mDatabase.child("Parada").child(name).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mDatabase.child("Rutas").child("Alban Borja").child(name).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task2) {
                 if (task2.isSuccessful()){

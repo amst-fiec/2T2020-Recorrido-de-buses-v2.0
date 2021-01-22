@@ -170,7 +170,7 @@ public class Login extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null) {
 
-            /*
+
             HashMap<String, String> info_user = new HashMap<String, String>();
             info_user.put("user_name", user.getDisplayName());
             info_user.put("user_email", user.getEmail());
@@ -181,7 +181,7 @@ public class Login extends AppCompatActivity {
             startActivity(i);
             finish();
 
-             */
+
             Map<String, Object> map = new HashMap<>();
             map.put("name", user.getDisplayName());
             map.put("email", user.getEmail());
@@ -261,7 +261,7 @@ public class Login extends AppCompatActivity {
 
 
 
-/*
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -270,5 +270,5 @@ public class Login extends AppCompatActivity {
         }
     }
 
-*/
+
 }

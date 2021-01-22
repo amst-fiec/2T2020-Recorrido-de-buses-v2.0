@@ -1,7 +1,12 @@
 package com.example.recorrido_buses;
 
+import org.joda.time.DateTime;
+
+import java.util.Date;
+
 public class MapsCoor {
 
+    private String fecha;
     private Double lat;
     private Double lon;
 
@@ -22,5 +27,13 @@ public class MapsCoor {
 
     public void setLon(Double lon) {
         this.lon = lon;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 }

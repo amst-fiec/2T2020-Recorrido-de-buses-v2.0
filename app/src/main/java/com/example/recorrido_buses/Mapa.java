@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,12 +50,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import Clases.User;
 
@@ -136,64 +142,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
 
     Boolean actualPosition = true;
-    JSONObject jso;
+
     Double longitudOrigen, latitudOrigen;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        db_reference.child("HistorialBuses").child("GYE2021").child("GSM").addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (Marker marker:realTimeMarkersBus){
-                    marker.remove();
-                }
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-                    MapsCoor mc = snapshot.getValue(MapsCoor.class);
-                    Double lat = mc.getLat();
-                    Double lon = mc.getLon();
-                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title(snapshot.getKey());
-                    markerOptions.position(new LatLng(lat, lon));
-                    System.out.print(lat);
-                    tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
-
-                }
-                realTimeMarkersBus.clear();
-                realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-        db_reference.child("Rutas").child("Alban Borja").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (Marker marker : realTimeMarkers) {
-                    marker.remove();
-                }
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    MapsCoor mc = snapshot.getValue(MapsCoor.class);
-                    Double lat = mc.getLat();
-                    Double lon = mc.getLon();
-                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(snapshot.getKey());
-                    markerOptions.position(new LatLng(lat, lon));
-                    tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
-                }
-
-                realTimeMarkers.clear();
-                realTimeMarkers.addAll(tmpRealTimeMarkers);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+        mostrarBus("GSM");
 
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
@@ -228,6 +185,96 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
+
+    }
+
+    private void mostrarBus(String tipo){
+        db_reference.child("HistorialBuses").child("GYE2021").child(tipo).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (Marker marker:tmpRealTimeMarkersBus){
+                    marker.remove();
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+
+                String fechaI="";
+                String key="";
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+
+                    MapsCoor mc = snapshot.getValue(MapsCoor.class);
+                    try {
+                        if (fechaI.equals("")){
+                            fechaI=mc.getFecha();
+                            key=snapshot.getKey();
+                        }
+                        else {
+                            Date fechaA = sdf.parse(fechaI);
+                            Date fechaN = sdf.parse( mc.getFecha());
+
+                            if(fechaA.compareTo(fechaN) < 0){
+
+                                fechaI= mc.getFecha();
+                                key=snapshot.getKey();
+                            }
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                assert key != null;
+                MapsCoor mc = dataSnapshot.child(key).getValue(MapsCoor.class);
+                Double lat = mc.getLat();
+                Double lon = mc.getLon();
+                MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title("GYE2021");
+                markerOptions.position(new LatLng(lat, lon));
+                System.out.print(lat);
+                tmpRealTimeMarkersBus.clear();
+                mMap.clear();
+                tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
+
+                realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
+
+                mostrarParadas();
+                trazarRuta();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+    private void mostrarParadas(){
+        db_reference.child("Rutas").child("Alban Borja").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (Marker marker : realTimeMarkers) {
+                    marker.remove();
+                }
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    MapsCoor mc = snapshot.getValue(MapsCoor.class);
+                    Double lat = mc.getLat();
+                    Double lon = mc.getLon();
+                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(snapshot.getKey());
+                    markerOptions.position(new LatLng(lat, lon));
+                    tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
+                }
+
+                realTimeMarkers.clear();
+                realTimeMarkers.addAll(tmpRealTimeMarkers);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+
+    private void trazarRuta() {
+
         String url ="https://maps.googleapis.com/maps/api/directions/json?origin=-2.144610446888712,-79.96498202864169&destination=-2.1702576319691707,-79.91816793723682&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
 
         RequestQueue queue = Volley.newRequestQueue(Mapa.this);
@@ -235,10 +282,31 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onResponse(String response) {
 
-
                 try {
-                    jso = new JSONObject(response);
-                    trazarRuta(jso);
+                    JSONObject jso = new JSONObject(response);
+
+                    try {
+                        JSONArray jRoutes = jso.getJSONArray("routes");
+                        for (int i=0; i<jRoutes.length();i++){
+                            JSONArray jLegs = ((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
+                            for (int j=0; j<jLegs.length();j++){
+
+                                JSONArray jSteps = ((JSONObject)jLegs.get(j)).getJSONArray("steps");
+
+                                for (int k = 0; k<jSteps.length();k++){
+
+                                    String polyline = ""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
+                                    Log.i("end",""+polyline);
+                                    List<LatLng> list = PolyUtil.decode(polyline);
+                                    mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.BLUE).width(10));
+                                }
+
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     Log.i("jsonRuta: ",""+response);
 
@@ -255,110 +323,21 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         });
 
         queue.add(stringRequest);
-    }
-
-    private void trazarRuta(JSONObject jso) {
-
-        JSONArray jRoutes;
-        JSONArray jLegs;
-        JSONArray jSteps;
-
-        try {
-            jRoutes = jso.getJSONArray("routes");
-            for (int i=0; i<jRoutes.length();i++){
-
-                jLegs = ((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
-
-                for (int j=0; j<jLegs.length();j++){
-
-                    jSteps = ((JSONObject)jLegs.get(j)).getJSONArray("steps");
-
-                    for (int k = 0; k<jSteps.length();k++){
-
-
-                        String polyline = ""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
-                        Log.i("end",""+polyline);
-                        List<LatLng> list = PolyUtil.decode(polyline);
-                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.BLUE).width(14));
-
-                    }
-
-                }
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
     }
 
     public void switchButton(View view) {
         if(tgbtn.isChecked())
         {
-
             setColorToggle(1);
-
             Toast.makeText(Mapa.this,"SigFox",Toast.LENGTH_SHORT).show();
-
-            db_reference.child("HistorialBuses").child("GYE2021").child("SIGFOX").addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (Marker marker:realTimeMarkersBus){
-                        marker.remove();
-                    }
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-                        MapsCoor mc = snapshot.getValue(MapsCoor.class);
-                        Double lat = mc.getLat();
-                        Double lon = mc.getLon();
-                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title(snapshot.getKey());
-                        markerOptions.position(new LatLng(lat, lon));
-                        System.out.print(lat);
-                        tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
-
-                    }
-                    realTimeMarkersBus.clear();
-                    realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
+            mostrarBus("SIGFOX");
         }
         else
         {
-
             setColorToggle(2);
-
             Toast.makeText(Mapa.this,"GSM",Toast.LENGTH_SHORT).show();
-            db_reference.child("HistorialBuses").child("GYE2021").child("GSM").addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (Marker marker:realTimeMarkersBus){
-                        marker.remove();
-                    }
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-                        MapsCoor mc = snapshot.getValue(MapsCoor.class);
-                        Double lat = mc.getLat();
-                        Double lon = mc.getLon();
-                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.bus2)).anchor(0.0f,1.0f).title(snapshot.getKey());
-                        markerOptions.position(new LatLng(lat, lon));
-                        System.out.print(lat);
-                        tmpRealTimeMarkersBus.add(mMap.addMarker(markerOptions));
-
-                    }
-                    realTimeMarkersBus.clear();
-                    realTimeMarkersBus.addAll(tmpRealTimeMarkersBus);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
+            mostrarBus("GSM");
         }
     }
 
