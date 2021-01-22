@@ -18,7 +18,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -80,8 +82,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public  ArrayList<String> listGSM=new ArrayList<>();
     public  ArrayList<String> listSigfoxHora=new ArrayList<>();
     public  ArrayList<String> listGSMHora=new ArrayList<>();
-
-
+    private View popup = null;
     private int userType=1;
 
     @Override
@@ -150,6 +151,28 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                if (popup == null) {
+                    popup = getLayoutInflater().inflate(R.layout.popupmaps, null);
+                }
+
+                TextView tv = (TextView) popup.findViewById(R.id.title);
+                ImageView iv = (ImageView) popup.findViewById(R.id.icon);
+                iv.setImageResource(R.drawable.google2);
+                tv.setText(marker.getTitle());
+                tv = (TextView) popup.findViewById(R.id.snippet);
+                tv.setText(marker.getSnippet());
+
+                return (popup);
+            }
+        });
 
         mostrarBus("GSM");
 
@@ -301,9 +324,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         JSONArray jLegs = ((JSONObject)(jRoutes.get(0))).getJSONArray("legs");
                         int jSteps = (int) ((JSONObject) ((JSONObject)jLegs.get(0)).get("duration")).get("value");
 
-
-
-                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(String.valueOf(jSteps));
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).snippet(String.valueOf(jSteps));
                         markerOptions.position(new LatLng(latF, lonF));
                         tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
 
@@ -324,6 +345,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         queue.add(stringRequest);
 
     }
+
     private void trazarRuta() {
 
         String url ="https://maps.googleapis.com/maps/api/directions/json?origin=-2.144610446888712,-79.96498202864169&destination=-2.1702576319691707,-79.91816793723682&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
