@@ -156,7 +156,7 @@ public class newParada extends AppCompatActivity {
                 if (task2.isSuccessful()){
                     Toast.makeText(newParada.this, "Parada registrada", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(newParada.this, Mapa.class);
+                    Intent intent = new Intent(newParada.this, Parada.class);
                     startActivity(intent);
                     finish();
                 }
