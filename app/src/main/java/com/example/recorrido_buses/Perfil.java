@@ -83,8 +83,14 @@ public class Perfil extends AppCompatActivity {
                 edad=noNull(user.getEdad());
                 email=noNull(user.getEmail());
 
-                photo = noNull(user.getPhoto());
-                Picasso.with(Perfil.this).load(photo).transform(new CircleTransform()).into(btnPhoto);
+                try {
+                    photo = noNull(user.getPhoto());
+                    Picasso.with(Perfil.this).load(photo).transform(new CircleTransform()).into(btnPhoto);
+                } catch (Exception e) {
+                    System.out.println("No hay foto");
+
+
+                }
                 tvtName.setText(name);
                 tvtEdad.setText(edad);
                 tvtEmail.setText(email);

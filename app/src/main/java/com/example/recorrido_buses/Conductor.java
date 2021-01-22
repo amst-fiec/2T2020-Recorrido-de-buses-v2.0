@@ -100,8 +100,16 @@ public class Conductor extends AppCompatActivity {
 
                 name = noNull(driver.getName());
                 edad = noNull(driver.getEdad());
-                photo = noNull(driver.getPhoto());
-                Picasso.with(Conductor.this).load(photo).transform(new CircleTransform()).into(btnPhoto);
+
+                try {
+                    photo = noNull(driver.getPhoto());
+                    Picasso.with(Conductor.this).load(photo).transform(new CircleTransform()).into(btnPhoto);
+                } catch (Exception e) {
+                    
+
+                }
+
+
                 tvtName.setText(name);
                 tvtEdad.setText(edad);
 
