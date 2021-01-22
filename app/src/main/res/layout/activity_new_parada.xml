@@ -69,7 +69,7 @@ tools:context=".newParada">
         android:background="@drawable/edit_button_red"
         android:layout_height="60dp"
         android:textColor="#FFFFFF"
-        android:onClick="registrar"
+        android:onClick="eliminar"
         />
 
 </LinearLayout>

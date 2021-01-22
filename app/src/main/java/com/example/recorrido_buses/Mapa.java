@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -251,28 +252,93 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 for (Marker marker : realTimeMarkers) {
                     marker.remove();
                 }
+                try{
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    MapsCoor mc = snapshot.getValue(MapsCoor.class);
-                    Double lat = mc.getLat();
-                    Double lon = mc.getLon();
-                    MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(snapshot.getKey());
-                    markerOptions.position(new LatLng(lat, lon));
-                    tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        MapsCoor mc = snapshot.getValue(MapsCoor.class);
+                        Double lat = mc.getLat();
+                        Double lon = mc.getLon();
+                        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.punto2)).anchor(0.0f, 1.0f).title(snapshot.getKey());
+                        markerOptions.position(new LatLng(lat, lon));
+                        tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
+                    }
+
+                    realTimeMarkers.clear();
+                    realTimeMarkers.addAll(tmpRealTimeMarkers);
+                }
+                catch (Exception e){
+
+
+
                 }
 
-                realTimeMarkers.clear();
-                realTimeMarkers.addAll(tmpRealTimeMarkers);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Toast.makeText(Mapa.this, "ALERTAAAAAAAAAA", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
 
+    private void getDistance(Double latI,Double lonI,Double latF,Double lonF) {
+
+        String url ="https://maps.googleapis.com/maps/api/directions/json?origin="+latI+","+lonI+"&destination="+latF+","+lonF+"&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";
+
+        RequestQueue queue = Volley.newRequestQueue(Mapa.this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jso = new JSONObject(response);
+
+                    try {
+                        JSONArray jRoutes = jso.getJSONArray("routes");
+                        for (int i=0; i<jRoutes.length();i++){
+                            JSONArray jLegs = ((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
+                            for (int j=0; j<jLegs.length();j++){
+
+                                JSONArray jSteps = ((JSONObject)jLegs.get(j)).getJSONArray("steps");
+
+                                for (int k = 0; k<jSteps.length();k++){
+
+                                    /*
+                                    String polyline = ""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
+                                    Log.i("end",""+polyline);
+                                    List<LatLng> list = PolyUtil.decode(polyline);
+                                    mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.BLUE).width(10));
+
+                                     */
+                                }
+
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.i("jsonRuta: ",""+response);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("Error","NO SALE EL MENSAJEEEE HELP!");
+            }
+        });
+
+        queue.add(stringRequest);
+
+    }
     private void trazarRuta() {
 
         String url ="https://maps.googleapis.com/maps/api/directions/json?origin=-2.144610446888712,-79.96498202864169&destination=-2.1702576319691707,-79.91816793723682&mode=DRIVING&key=AIzaSyBFUUDV1Z6mQSMYWOSaJds8dU_gRs9b7EY";

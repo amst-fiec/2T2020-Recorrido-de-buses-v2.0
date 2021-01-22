@@ -34,7 +34,6 @@ public class Parada extends AppCompatActivity {
     private ImageButton btnNewParada;
 
     FirebaseAuth mAuth;
-
     private int userType=1;
 
 
@@ -43,12 +42,9 @@ public class Parada extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parada);
 
-
         mAuth = FirebaseAuth.getInstance();
         db_reference = FirebaseDatabase.getInstance().getReference();
-
         simpleList = (ListView)findViewById(R.id.listaParadas);
-
         btnNewParada = (ImageButton)findViewById(R.id.btnNewParada);
 
 
@@ -82,14 +78,14 @@ public class Parada extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-                String parada = adapterView.getItemAtPosition(i).toString();
-
-                Intent intent = new Intent(Parada.this, newParada.class);
-                intent.putExtra("isNew",false);
-                intent.putExtra("parada",parada);
-                startActivity(intent);
-                finish();
+                if (userType==0){
+                    String parada = adapterView.getItemAtPosition(i).toString();
+                    Intent intent = new Intent(Parada.this, newParada.class);
+                    intent.putExtra("isNew",false);
+                    intent.putExtra("parada",parada);
+                    startActivity(intent);
+                    finish();
+                }
 
             }
         });
@@ -142,25 +138,19 @@ public class Parada extends AppCompatActivity {
 
                     if(userType==1){
                         btnNewParada.setVisibility(View.INVISIBLE);
-                        simpleList.setEnabled(false);
-
                     }
                     else {
                         btnNewParada.setVisibility(View.VISIBLE);
-                        simpleList.setEnabled(true);
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-
-
     }
+
 
 
     @Override

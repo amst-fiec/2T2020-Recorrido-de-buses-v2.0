@@ -83,11 +83,16 @@ public class newParada extends AppCompatActivity {
             mDatabase.child("Rutas").child("Alban Borja").child(idParada).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    try {
 
-                    MapsCoor mc = dataSnapshot.getValue(MapsCoor.class);
-                    edtName.setText(dataSnapshot.getKey());
-                    edtLat.setText(mc.getLat().toString());
-                    edtLon.setText(mc.getLon().toString());
+                        MapsCoor mc = dataSnapshot.getValue(MapsCoor.class);
+                        edtName.setText(dataSnapshot.getKey());
+                        edtLat.setText(mc.getLat().toString());
+                        edtLon.setText(mc.getLon().toString());
+                    }
+                    catch (Exception ignored){
+
+                    }
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -118,6 +123,26 @@ public class newParada extends AppCompatActivity {
         }
 
     }
+    public void eliminar(View view) {
+        name =edtName.getText().toString();
+        if(!name.isEmpty()){
+
+            mDatabase.child("Rutas").child("Alban Borja").child(idParada).setValue(null);
+
+            Toast.makeText(newParada.this, "Parada eliminada", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(newParada.this, Parada.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            Toast.makeText(newParada.this,"Debe rellenar todos los campos",Toast.LENGTH_LONG).show();
+
+        }
+
+    }
+
+
 
     private void registerStation(){
 
